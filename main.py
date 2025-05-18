@@ -1,12 +1,12 @@
 import streamlit as st
 import pandas as pd
-import os
 import requests
 from datetime import datetime, timedelta
 import matplotlib.pyplot as plt
 from statsmodels.tsa.arima.model import ARIMA
 import numpy as np
 import groq
+import os
 
 # === PAGE CONFIG ===
 st.set_page_config(page_title="S&P 500 Stock Forecast", layout="wide")
@@ -16,21 +16,10 @@ TWELVE_DATA_API_KEY = "your_twelve_data_api_key"
 GROQ_API_KEY = "your_groq_api_key"
 
 # === LOAD S&P 500 LIST ===
+@st.cache_data
 def load_sp500_symbols():
-    data = {
-        "Symbol": ["AAPL", "MSFT", "GOOGL", "AMZN", "META", "TSLA", "NVDA"],
-        "Name": [
-            "Apple Inc.",
-            "Microsoft Corporation",
-            "Alphabet Inc. (Google)",
-            "Amazon.com Inc.",
-            "Meta Platforms, Inc.",
-            "Tesla, Inc.",
-            "NVIDIA Corporation"
-        ]
-    }
-    return pd.DataFrame(data)
-    
+    return pd.read_csv("sp500_symbols.csv")
+
 sp500_df = load_sp500_symbols()
 symbol_name = st.selectbox("Choose an S&P 500 Company:", sp500_df["Name"])
 symbol = sp500_df[sp500_df["Name"] == symbol_name]["Symbol"].values[0]
