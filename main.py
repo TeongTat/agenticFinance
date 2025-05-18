@@ -17,7 +17,9 @@ GROQ_API_KEY = "your_groq_api_key"
 # === LOAD S&P 500 LIST ===
 @st.cache_data
 def load_sp500_symbols():
-    return pd.read_csv("sp500_symbols.csv")
+    base_dir = os.path.dirname(__file__)
+    csv_path = os.path.join(base_dir, "sp500_symbols.csv")
+    return pd.read_csv(csv_path)
 
 sp500_df = load_sp500_symbols()
 symbol_name = st.selectbox("Choose an S&P 500 Company:", sp500_df["Name"])
