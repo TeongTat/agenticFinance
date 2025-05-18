@@ -16,12 +16,21 @@ TWELVE_DATA_API_KEY = "your_twelve_data_api_key"
 GROQ_API_KEY = "your_groq_api_key"
 
 # === LOAD S&P 500 LIST ===
-@st.cache_data
 def load_sp500_symbols():
-    base_dir = os.path.dirname(__file__)
-    csv_path = os.path.join(base_dir, "sp500_symbols.csv")
-    return pd.read_csv(csv_path)
-
+    data = {
+        "Symbol": ["AAPL", "MSFT", "GOOGL", "AMZN", "META", "TSLA", "NVDA"],
+        "Name": [
+            "Apple Inc.",
+            "Microsoft Corporation",
+            "Alphabet Inc. (Google)",
+            "Amazon.com Inc.",
+            "Meta Platforms, Inc.",
+            "Tesla, Inc.",
+            "NVIDIA Corporation"
+        ]
+    }
+    return pd.DataFrame(data)
+    
 sp500_df = load_sp500_symbols()
 symbol_name = st.selectbox("Choose an S&P 500 Company:", sp500_df["Name"])
 symbol = sp500_df[sp500_df["Name"] == symbol_name]["Symbol"].values[0]
